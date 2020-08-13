@@ -3,6 +3,7 @@ import ContactContext from '../../context/contact/contactContext';
 
 const ContactFilter = () => {
 	const contactContext = useContext(ContactContext);
+	//reference dom objects
 	const text = useRef('');
 
 	const { filterContacts, clearFilter, filtered } = contactContext;
@@ -28,6 +29,7 @@ const ContactFilter = () => {
 				type={text}
 				placeholder='Filter Contacts..'
 				onChange={onChange}
+				className='search'
 			/>
 		</form>
 	);

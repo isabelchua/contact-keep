@@ -2,11 +2,11 @@
 
 /* Global Styles */
 :root {
-	--primary-color: #003699;
-	--dark-color: #333333;
-	--light-color: #f4f4f4;
-	--danger-color: #dc3545;
-	--success-color: #28a745;
+	--primary-color: #2d5055;
+	--dark-color: #343536;
+	--light-color: #eeeeee;
+	--danger-color: #cf3141;
+	--success-color: #2fb94f;
 }
 
 * {
@@ -20,7 +20,7 @@ body {
 	font-size: 1rem;
 	line-height: 1.6;
 	background-color: #fff;
-	color: #333;
+	color: rgb(68, 68, 68);
 }
 
 a {
@@ -309,12 +309,17 @@ input[type='email'],
 input[type='password'],
 input[type='date'],
 select,
+.search,
 textarea {
 	display: block;
 	width: 100%;
 	padding: 0.4rem;
 	font-size: 1.2rem;
 	border: 1px solid #ccc;
+}
+
+.radiob {
+	margin: 10px 10px 10px 25px;
 }
 
 input[type='submit'],

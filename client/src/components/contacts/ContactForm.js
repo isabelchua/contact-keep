@@ -53,7 +53,7 @@ const ContactForm = () => {
 			</h2>
 			<input
 				type='text'
-				placeholder='name'
+				placeholder='Name'
 				name='name'
 				value={name}
 				onChange={onChange}
@@ -79,6 +79,7 @@ const ContactForm = () => {
 				value='personal'
 				checked={type === 'personal'}
 				onChange={onChange}
+				className='radiob'
 			/>
 			Personal{' '}
 			<input
@@ -87,6 +88,7 @@ const ContactForm = () => {
 				value='professional'
 				checked={type === 'professional'}
 				onChange={onChange}
+				className='radiob'
 			/>
 			Professional
 			<div>
