@@ -1,61 +1,127 @@
 import React, { useReducer } from 'react';
-import uuid from 'uuid';
+import axios from 'axios';
 import ContactContext from './contactContext';
 import contactReducer from './contactReducer';
 
 import {
+	GET_CONTACTS,
 	ADD_CONTACT,
 	DELETE_CONTACT,
 	SET_CURRENT,
-	SET_CONTACT,
-	CLEAR_CONTACT,
 	CLEAR_CURRENT,
 	UPDATE_CONTACT,
 	FILTER_CONTACTS,
-	CLEAR_FILTER
+	CLEAR_CONTACTS,
+	CLEAR_FILTER,
+	CONTACT_ERROR
 } from '../Types';
 
 const ContactState = props => {
 	const initialState = {
-		contacts: [
-			{
-				id: 1,
-				name: 'stela dls',
-				email: 'stla@email.com',
-				phone: '123-12-323',
-				type: 'personal'
-			},
-			{
-				id: 2,
-				name: 'gotrd aaaa',
-				email: 'sa@gmail.com',
-				phone: '2313-231-23',
-				type: 'professional'
-			},
-			{
-				id: 3,
-				name: 'hana vvv',
-				email: 'hhh@gmail.com',
-				phone: '232-22',
-				type: 'personal'
-			}
-		],
+		contacts: null,
 		//edit to be put on this state
 		current: null,
-		filtered: null
+		filtered: null,
+		error: null
 	};
 
 	const [state, dispatch] = useReducer(contactReducer, initialState);
 
+	// get contacts
+	const getContacts = async () => {
+		//just to generate dummy id
+		//contact.id = uuid.v4();
+		try {
+			const res = await axios.get('/api/contacts');
+
+			// not sending the direct data that's passed. sending the response from the server
+			dispatch({
+				type: GET_CONTACTS,
+				payload: res.data
+			});
+			//not sending the token bc it's set globally as long as token is in local storage
+		} catch (err) {
+			dispatch({
+				type: CONTACT_ERROR,
+				payload: err.response.msg
+			});
+		}
+	};
+
 	//add contact
-	const addContact = contact => {
-		contact.id = uuid.v4();
-		dispatch({ type: ADD_CONTACT, payload: contact });
+	const addContact = async contact => {
+		//just to generate dummy id
+		//contact.id = uuid.v4();
+		const config = {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		};
+
+		try {
+			const res = await axios.post('/api/contacts', contact, config);
+
+			// not sending the direct data that's passed. sending the response from the server
+			dispatch({
+				type: ADD_CONTACT,
+				payload: res.data
+			});
+			//not sending the token bc it's set globally as long as token is in local storage
+		} catch (err) {
+			dispatch({
+				type: CONTACT_ERROR,
+				payload: err.response.msg
+			});
+		}
 	};
 	//  delete contact
-	const deleteContact = id => {
-		dispatch({ type: DELETE_CONTACT, payload: id });
+	const deleteContact = async id => {
+		try {
+			await axios.delete(`/api/contacts/${id}`);
+
+			dispatch({
+				type: DELETE_CONTACT,
+				payload: id
+			});
+		} catch (err) {
+			dispatch({
+				type: CONTACT_ERROR,
+				payload: err.response.msg
+			});
+		}
 	};
+	//  update contact
+	const updateContact = async contact => {
+		const config = {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		};
+
+		try {
+			const res = await axios.put(
+				`/api/contacts/${contact._id}`,
+				contact,
+				config
+			);
+
+			dispatch({
+				type: UPDATE_CONTACT,
+				payload: res.data
+			});
+		} catch (err) {
+			dispatch({
+				type: CONTACT_ERROR,
+				payload: err.response.msg
+			});
+		}
+	};
+
+	//clear contacts
+	const clearContacts = () => {
+		dispatch({ type: CLEAR_CONTACTS });
+	};
+
 	//  set current contact
 	const setCurrent = contact => {
 		dispatch({ type: SET_CURRENT, payload: contact });
@@ -64,10 +130,7 @@ const ContactState = props => {
 	const clearCurrent = () => {
 		dispatch({ type: CLEAR_CURRENT });
 	};
-	//  update contact
-	const updateContact = contact => {
-		dispatch({ type: UPDATE_CONTACT, payload: contact });
-	};
+
 	//  filter contacts
 	const filterContacts = text => {
 		dispatch({ type: FILTER_CONTACTS, payload: text });
@@ -83,13 +146,16 @@ const ContactState = props => {
 				contacts: state.contacts,
 				current: state.current,
 				filtered: state.filtered,
+				error: state.error,
 				addContact,
 				deleteContact,
 				setCurrent,
 				clearCurrent,
 				updateContact,
 				filterContacts,
-				clearFilter
+				clearFilter,
+				getContacts,
+				clearContacts
 			}}
 		>
 			{props.children}

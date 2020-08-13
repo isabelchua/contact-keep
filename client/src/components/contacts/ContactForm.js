@@ -40,12 +40,6 @@ const ContactForm = () => {
 			updateContact(contact);
 		}
 		clearAll();
-		// setContact({
-		// 	name: '',
-		// 	email: '',
-		// 	phone: '',
-		// 	type: 'personal'
-		// });
 	};
 
 	const clearAll = () => {
@@ -55,7 +49,7 @@ const ContactForm = () => {
 	return (
 		<form onSubmit={onSubmit}>
 			<h2 className='text-primary'>
-				{current ? 'Edit Contact' : 'Add Contact'}
+				{current ? 'Edit Selected Contact' : 'Add Contact'}
 			</h2>
 			<input
 				type='text'
@@ -104,11 +98,8 @@ const ContactForm = () => {
 			</div>
 			{current && (
 				<div>
-					<button
-						className='btn btn-light btn-btn-block'
-						onClick={clearAll}
-					>
-						Clear
+					<button className='btn btn-light btn-block' onClick={clearAll}>
+						Clear Fields
 					</button>
 				</div>
 			)}
