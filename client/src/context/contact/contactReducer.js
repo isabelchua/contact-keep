@@ -9,7 +9,7 @@ import {
 	CLEAR_FILTER,
 	CONTACT_ERROR,
 	CLEAR_CONTACTS
-} from '../Types';
+} from '../types';
 
 export default (state, action) => {
 	switch (action.type) {
