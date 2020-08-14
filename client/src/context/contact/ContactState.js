@@ -14,7 +14,7 @@ import {
 	CLEAR_CONTACTS,
 	CLEAR_FILTER,
 	CONTACT_ERROR
-} from '../Types';
+} from '../types';
 
 const ContactState = props => {
 	const initialState = {
